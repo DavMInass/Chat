@@ -11,6 +11,15 @@ const io = socket(server)
 
 io.on("connection", (socket) =>{
     console.log("User is connected");
+    socket.emit('message', 'welcome');
+    socket.broadcast.emit('message', 'user has joined')
+    socket.on('chatmsg', (m)=>{
+        io.emit('message', m)
+    })
+    socket.on("disconnect",()=>{
+        io.emit('message', "a user has left!")
+    });
+
 })
 
 app.get('/', (req, res) => {
